@@ -36,8 +36,6 @@ func main() {
 	tp.SetRawlogLevel("error")
 
 	var peer = tp.NewPeer(&tp.PeerConfig{
-		DefaultReadTimeout:   time.Minute * 5,
-		DefaultWriteTimeout:  time.Second * 5,
 		TlsCertFile:          "",
 		TlsKeyFile:           "",
 		SlowCometDuration:    time.Millisecond * 500,
