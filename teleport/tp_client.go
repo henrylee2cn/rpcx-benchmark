@@ -88,6 +88,11 @@ func main() {
 			}
 			defer sess.Close()
 
+			//warmup
+			for j := 0; j < 5; j++ {
+				sess.Pull(serviceMethod, args, new(BenchmarkMessage))
+			}
+
 			startWg.Done()
 			startWg.Wait()
 			var (
