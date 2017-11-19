@@ -84,26 +84,25 @@ func main() {
 				startWg.Done()
 				panic(err)
 			}
-			defer sess.Close()
-
+			var (
+				reply BenchmarkMessage
+				xerr  tp.Xerror
+			)
 			//warmup
 			for j := 0; j < 5; j++ {
-				sess.Pull(serviceMethod, args, new(BenchmarkMessage))
+				sess.Pull(serviceMethod, args, &reply)
 			}
 
 			startWg.Done()
 			startWg.Wait()
-			var (
-				reply interface{}
-				xerr  tp.Xerror
-			)
+
 			for j := 0; j < m; j++ {
 				t := time.Now().UnixNano()
-				reply, xerr = sess.Pull(serviceMethod, args, new(BenchmarkMessage)).Result()
+				xerr = sess.Pull(serviceMethod, args, &reply).Xerror()
 				d[i] = append(d[i], time.Now().UnixNano()-t)
 				if xerr != nil {
 					log.Print(xerr.Error())
-				} else if reply.(*BenchmarkMessage).Field1 == "OK" {
+				} else if reply.Field1 == "OK" {
 					atomic.AddUint64(&transOK, 1)
 				}
 				atomic.AddUint64(&trans, 1)
