@@ -50,8 +50,7 @@ func main() {
 				}
 
 				// write response
-				packet.Header.StatusCode = 200
-				packet.Header.Status = "ok"
+				packet.Header.Code = 200
 
 				args.Field1 = "OK"
 				args.Field2 = 100

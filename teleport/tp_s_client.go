@@ -11,6 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/henrylee2cn/teleport/codec"
 	"github.com/henrylee2cn/teleport/socket"
 	"github.com/montanaflynn/stats"
 )
@@ -84,11 +85,9 @@ func main() {
 				t := time.Now().UnixNano()
 				packet.Reset(nil)
 				packet.Header.Type = 0
-				packet.HeaderCodec = "protobuf"
-				packet.BodyCodec = "protobuf"
+				packet.BodyType = codec.ID_PROTOBUF
 				packet.Header.Seq = uint64(j)
 				packet.Header.Uri = serviceMethod
-				packet.Header.Gzip = 0
 				packet.Body = args
 				err = s.WritePacket(packet)
 				if err != nil {
