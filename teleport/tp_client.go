@@ -56,13 +56,7 @@ func main() {
 	tp.SetRawlogLevel("error")
 
 	var peer = tp.NewPeer(&tp.PeerConfig{
-		TlsCertFile:          "",
-		TlsKeyFile:           "",
-		SlowCometDuration:    time.Millisecond * 500,
-		DefaultHeaderCodec:   "protobuf",
-		DefaultBodyCodec:     "protobuf",
-		DefaultBodyGzipLevel: 0,
-		PrintBody:            false,
+		DefaultBodyType: "protobuf",
 	})
 	defer peer.Close()
 
@@ -86,22 +80,18 @@ func main() {
 			}
 			var (
 				reply BenchmarkMessage
-				xerr  tp.Xerror
+				rerr  *tp.Rerror
 			)
-			//warmup
-			for j := 0; j < 5; j++ {
-				sess.Pull(serviceMethod, args, &reply)
-			}
 
 			startWg.Done()
 			startWg.Wait()
 
 			for j := 0; j < m; j++ {
 				t := time.Now().UnixNano()
-				xerr = sess.Pull(serviceMethod, args, &reply).Xerror()
+				rerr = sess.Pull(serviceMethod, args, &reply).Rerror()
 				d[i] = append(d[i], time.Now().UnixNano()-t)
-				if xerr != nil {
-					log.Print(xerr.Error())
+				if rerr != nil {
+					log.Print(rerr)
 				} else if reply.Field1 == "OK" {
 					atomic.AddUint64(&transOK, 1)
 				}
@@ -138,6 +128,7 @@ func main() {
 	log.Printf("throughput  (TPS)    : %d\n", int64(n*m)*1000/totalT)
 	log.Printf("mean: %.f ns, median: %.f ns, max: %.f ns, min: %.f ns, p99.9: %.f ns\n", mean, median, max, min, p99)
 	log.Printf("mean: %d ms, median: %d ms, max: %d ms, min: %d ms, p99: %d ms\n", int64(mean/1000000), int64(median/1000000), int64(max/1000000), int64(min/1000000), int64(p99/1000000))
+	select {}
 }
 
 func prepareArgs() *BenchmarkMessage {

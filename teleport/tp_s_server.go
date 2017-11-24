@@ -50,8 +50,6 @@ func main() {
 				}
 
 				// write response
-				packet.Header.Code = 200
-
 				args.Field1 = "OK"
 				args.Field2 = 100
 

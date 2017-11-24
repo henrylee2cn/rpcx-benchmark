@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	_ "net/http/pprof"
-	"time"
 
 	tp "github.com/henrylee2cn/teleport"
 )
@@ -14,7 +13,7 @@ type Hello struct {
 	tp.PullCtx
 }
 
-func (h *Hello) Say(args *BenchmarkMessage) (*BenchmarkMessage, tp.Xerror) {
+func (h *Hello) Say(args *BenchmarkMessage) (*BenchmarkMessage, *tp.Rerror) {
 	args.Field1 = "OK"
 	args.Field2 = 100
 	return args, nil
@@ -36,14 +35,8 @@ func main() {
 	tp.SetRawlogLevel("error")
 
 	var peer = tp.NewPeer(&tp.PeerConfig{
-		TlsCertFile:          "",
-		TlsKeyFile:           "",
-		SlowCometDuration:    time.Millisecond * 500,
-		DefaultHeaderCodec:   "protobuf",
-		DefaultBodyCodec:     "protobuf",
-		DefaultBodyGzipLevel: 0,
-		PrintBody:            false,
-		ListenAddrs:          []string{*host},
+		DefaultBodyType: "protobuf",
+		ListenAddrs:     []string{*host},
 	})
 	defer peer.Close()
 
