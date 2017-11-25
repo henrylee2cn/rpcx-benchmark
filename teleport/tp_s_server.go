@@ -37,10 +37,10 @@ func main() {
 			var args = new(BenchmarkMessage)
 			for {
 				// read request
-				var packet = socket.GetPacket(func(_ *socket.Header) interface{} {
+				var packet = socket.GetPacket(socket.WithNewBody(func(seq uint64, ptype byte, uri string) interface{} {
 					*args = BenchmarkMessage{}
 					return args
-				})
+				}))
 				err = s.ReadPacket(packet)
 				if err != nil {
 					// log.Printf("[SVR] read request err: %v", err)

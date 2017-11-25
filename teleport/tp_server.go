@@ -35,8 +35,8 @@ func main() {
 	tp.SetRawlogLevel("error")
 
 	var peer = tp.NewPeer(&tp.PeerConfig{
-		DefaultBodyType: "protobuf",
-		ListenAddrs:     []string{*host},
+		DefaultBodyCodec: "protobuf",
+		ListenAddrs:      []string{*host},
 	})
 	defer peer.Close()
 

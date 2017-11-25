@@ -84,11 +84,11 @@ func main() {
 			for j := 0; j < m; j++ {
 				t := time.Now().UnixNano()
 				packet.Reset(nil)
-				packet.Header.Type = 0
-				packet.BodyType = codec.ID_PROTOBUF
-				packet.Header.Seq = uint64(j)
-				packet.Header.Uri = serviceMethod
-				packet.Body = args
+				packet.SetPtype(0)
+				packet.SetBodyCodec(codec.ID_PROTOBUF)
+				packet.SetSeq(uint64(j))
+				packet.SetUri(serviceMethod)
+				packet.SetBody(args)
 				err = s.WritePacket(packet)
 				if err != nil {
 					log.Printf("[CLI] write request err: %v", err)
@@ -96,9 +96,9 @@ func main() {
 				}
 
 				// read response
-				packet.Reset(func(_ *socket.Header) interface{} {
+				packet.Reset(socket.WithNewBody(func(seq uint64, ptype byte, uri string) interface{} {
 					return reply
-				})
+				}))
 				err = s.ReadPacket(packet)
 				d[i] = append(d[i], time.Now().UnixNano()-t)
 				if err != nil {
