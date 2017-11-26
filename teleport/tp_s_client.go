@@ -96,7 +96,7 @@ func main() {
 				}
 
 				// read response
-				packet.Reset(socket.WithNewBody(func(seq uint64, ptype byte, uri string) interface{} {
+				packet.Reset(socket.WithNewBody(func(header socket.Header) interface{} {
 					return reply
 				}))
 				err = s.ReadPacket(packet)

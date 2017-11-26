@@ -37,7 +37,7 @@ func main() {
 			var args = new(BenchmarkMessage)
 			for {
 				// read request
-				var packet = socket.GetPacket(socket.WithNewBody(func(seq uint64, ptype byte, uri string) interface{} {
+				var packet = socket.GetPacket(socket.WithNewBody(func(header socket.Header) interface{} {
 					*args = BenchmarkMessage{}
 					return args
 				}))
