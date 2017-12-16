@@ -78,11 +78,6 @@ func main() {
 
 			var reply BenchmarkMessage
 
-			//warmup
-			for j := 0; j < 5; j++ {
-				xclient.Call(context.Background(), serviceMethod, args, &reply)
-			}
-
 			startWg.Done()
 			startWg.Wait()
 
