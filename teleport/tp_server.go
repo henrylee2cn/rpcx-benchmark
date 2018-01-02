@@ -36,7 +36,7 @@ func main() {
 
 	var peer = tp.NewPeer(&tp.PeerConfig{
 		DefaultBodyCodec: "protobuf",
-		ListenAddrs:      []string{*host},
+		ListenAddress:    *host,
 	})
 	defer peer.Close()
 
