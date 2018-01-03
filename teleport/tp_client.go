@@ -61,7 +61,7 @@ func main() {
 
 	tp.SetRawlogLevel("error")
 
-	var peer = tp.NewPeer(&tp.PeerConfig{
+	var peer = tp.NewPeer(tp.PeerConfig{
 		DefaultBodyCodec: "protobuf",
 	})
 	defer peer.Close()
