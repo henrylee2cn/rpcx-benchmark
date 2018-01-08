@@ -59,7 +59,7 @@ func main() {
 
 	d := make([][]int64, n, n)
 
-	tp.SetRawlogLevel("error")
+	tp.SetLoggerLevel("error")
 
 	var peer = tp.NewPeer(tp.PeerConfig{
 		DefaultBodyCodec: "protobuf",

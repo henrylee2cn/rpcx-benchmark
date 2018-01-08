@@ -32,7 +32,7 @@ func main() {
 		log.Println(http.ListenAndServe(*debugAddr, nil))
 	}()
 
-	tp.SetRawlogLevel("error")
+	tp.SetLoggerLevel("error")
 
 	var peer = tp.NewPeer(tp.PeerConfig{
 		DefaultBodyCodec: "protobuf",
