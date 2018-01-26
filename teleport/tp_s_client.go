@@ -25,6 +25,7 @@ var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 
 func main() {
 	flag.Parse()
+	socket.SetNoDelay(false)
 
 	go func() {
 		log.Println(http.ListenAndServe(*debugAddr, nil))

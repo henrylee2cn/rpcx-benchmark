@@ -18,6 +18,7 @@ var (
 
 func main() {
 	flag.Parse()
+	socket.SetNoDelay(false)
 
 	go func() {
 		log.Println(http.ListenAndServe(*debugAddr, nil))

@@ -33,6 +33,7 @@ func main() {
 	}()
 
 	tp.SetLoggerLevel("error")
+	tp.SetSocketNoDelay(false)
 
 	var peer = tp.NewPeer(tp.PeerConfig{
 		DefaultBodyCodec: "protobuf",
@@ -40,6 +41,6 @@ func main() {
 	})
 	defer peer.Close()
 
-	peer.PullRouter.Reg(new(Hello))
+	peer.RoutePull(new(Hello))
 	peer.Listen()
 }

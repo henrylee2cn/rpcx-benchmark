@@ -60,6 +60,7 @@ func main() {
 	d := make([][]int64, n, n)
 
 	tp.SetLoggerLevel("error")
+	tp.SetSocketNoDelay(false)
 
 	var peer = tp.NewPeer(tp.PeerConfig{
 		DefaultBodyCodec: "protobuf",
